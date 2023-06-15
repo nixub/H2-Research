@@ -109,7 +109,7 @@ public class Constants {
     public static final int VERSION_MINOR = 0;
 
     /**
-     * The lock mode that means no locking is used at all.
+     * The lock mode that means no locking is used at all. 不锁
      */
     public static final int LOCK_MODE_OFF = 0;
 

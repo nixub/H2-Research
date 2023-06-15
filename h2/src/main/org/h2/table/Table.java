@@ -5,35 +5,18 @@
  */
 package org.h2.table;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import org.h2.api.ErrorCode;
 import org.h2.command.Prepared;
 import org.h2.command.query.AllColumnsForPlan;
 import org.h2.constraint.Constraint;
 import org.h2.constraint.Constraint.Type;
-import org.h2.engine.CastDataProvider;
-import org.h2.engine.Constants;
-import org.h2.engine.DbObject;
-import org.h2.engine.Right;
-import org.h2.engine.SessionLocal;
+import org.h2.engine.*;
 import org.h2.expression.ExpressionVisitor;
 import org.h2.index.Index;
 import org.h2.index.IndexType;
 import org.h2.message.DbException;
 import org.h2.message.Trace;
-import org.h2.result.DefaultRow;
-import org.h2.result.LocalResult;
-import org.h2.result.Row;
-import org.h2.result.RowFactory;
-import org.h2.result.SearchRow;
-import org.h2.result.SimpleRowValue;
-import org.h2.result.SortOrder;
+import org.h2.result.*;
 import org.h2.schema.Schema;
 import org.h2.schema.SchemaObject;
 import org.h2.schema.Sequence;
@@ -42,6 +25,9 @@ import org.h2.util.Utils;
 import org.h2.value.CompareMode;
 import org.h2.value.Value;
 import org.h2.value.ValueNull;
+
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * This is the base class for most tables.
@@ -80,6 +66,8 @@ public abstract class Table extends SchemaObject {
     /**
      * Protected tables are not listed in the meta data and are excluded when
      * using the SCRIPT command.
+     * 受保护的表未在元数据中列出，并且在以下情况下被排除在外
+     *       * 使用 SCRIPT 命令。
      */
     protected boolean isHidden;
 
@@ -94,9 +82,10 @@ public abstract class Table extends SchemaObject {
      */
     private final CopyOnWriteArrayList<TableView> dependentViews = new CopyOnWriteArrayList<>();
     private ArrayList<TableSynonym> synonyms;
-    /** Is foreign key constraint checking enabled for this table. */
+    /** Is foreign key constraint checking enabled for this table.   外键约束开启*/
     private boolean checkForeignKeyConstraints = true;
     private boolean onCommitDrop, onCommitTruncate;
+    // row使用 volatile 修饰 原子化，保证有序性
     private volatile Row nullRow;
     private RowFactory rowFactory = RowFactory.getRowFactory();
     private boolean tableExpression;
@@ -416,7 +405,7 @@ public abstract class Table extends SchemaObject {
 
     /**
      * Add all objects that this table depends on to the hash set.
-     *
+     * 将此表所依赖的对象都添加到  set 中 此表的组成对象有  sequences  columns  constraints table
      * @param dependencies the current set of dependencies
      */
     public void addDependencies(HashSet<DbObject> dependencies) {
@@ -469,6 +458,7 @@ public abstract class Table extends SchemaObject {
         return children;
     }
 
+    //创建表里面的列
     protected void setColumns(Column[] columns) {
         if (columns.length > Constants.MAX_COLUMNS) {
             throw DbException.get(ErrorCode.TOO_MANY_COLUMNS_1, "" + Constants.MAX_COLUMNS);

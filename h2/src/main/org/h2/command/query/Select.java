@@ -5,30 +5,13 @@
  */
 package org.h2.command.query;
 
-import static org.h2.expression.Expression.WITHOUT_PARENTHESES;
-import static org.h2.util.HasSQL.ADD_PLAN_INFORMATION;
-import static org.h2.util.HasSQL.DEFAULT_SQL_FLAGS;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.BitSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map.Entry;
 import org.h2.api.ErrorCode;
 import org.h2.api.Trigger;
 import org.h2.engine.Constants;
 import org.h2.engine.Database;
 import org.h2.engine.Mode.ExpressionNames;
 import org.h2.engine.SessionLocal;
-import org.h2.expression.Alias;
-import org.h2.expression.Expression;
-import org.h2.expression.ExpressionColumn;
-import org.h2.expression.ExpressionList;
-import org.h2.expression.ExpressionVisitor;
-import org.h2.expression.Parameter;
-import org.h2.expression.Wildcard;
+import org.h2.expression.*;
 import org.h2.expression.analysis.DataAnalysisOperation;
 import org.h2.expression.analysis.Window;
 import org.h2.expression.condition.Comparison;
@@ -40,26 +23,21 @@ import org.h2.index.Index;
 import org.h2.index.ViewIndex;
 import org.h2.message.DbException;
 import org.h2.mode.DefaultNullOrdering;
-import org.h2.result.LazyResult;
-import org.h2.result.LocalResult;
-import org.h2.result.ResultInterface;
-import org.h2.result.ResultTarget;
-import org.h2.result.Row;
-import org.h2.result.SearchRow;
-import org.h2.result.SortOrder;
-import org.h2.table.Column;
-import org.h2.table.ColumnResolver;
-import org.h2.table.IndexColumn;
-import org.h2.table.Table;
-import org.h2.table.TableFilter;
-import org.h2.table.TableType;
-import org.h2.table.TableView;
+import org.h2.result.*;
+import org.h2.table.*;
 import org.h2.util.ParserUtil;
 import org.h2.util.StringUtils;
 import org.h2.util.Utils;
 import org.h2.value.DataType;
 import org.h2.value.Value;
 import org.h2.value.ValueRow;
+
+import java.util.*;
+import java.util.Map.Entry;
+
+import static org.h2.expression.Expression.WITHOUT_PARENTHESES;
+import static org.h2.util.HasSQL.ADD_PLAN_INFORMATION;
+import static org.h2.util.HasSQL.DEFAULT_SQL_FLAGS;
 
 /**
  * This class represents a simple SELECT statement.

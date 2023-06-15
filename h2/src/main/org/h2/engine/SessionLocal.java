@@ -5,20 +5,6 @@
  */
 package org.h2.engine;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.WeakHashMap;
-import java.util.concurrent.atomic.AtomicReference;
 import org.h2.api.ErrorCode;
 import org.h2.api.JavaObjectSerializer;
 import org.h2.command.Command;
@@ -49,26 +35,23 @@ import org.h2.store.DataHandler;
 import org.h2.store.InDoubtTransaction;
 import org.h2.store.LobStorageFrontend;
 import org.h2.table.Table;
-import org.h2.util.DateTimeUtils;
-import org.h2.util.HasSQL;
-import org.h2.util.NetworkConnectionInfo;
-import org.h2.util.SmallLRUCache;
-import org.h2.util.TimeZoneProvider;
-import org.h2.util.Utils;
-import org.h2.value.Value;
-import org.h2.value.ValueLob;
-import org.h2.value.ValueNull;
-import org.h2.value.ValueTimestampTimeZone;
-import org.h2.value.ValueVarchar;
-import org.h2.value.VersionedValue;
+import org.h2.util.*;
+import org.h2.value.*;
 import org.h2.value.lob.LobData;
 import org.h2.value.lob.LobDataDatabase;
 import org.h2.value.lob.LobDataInMemory;
+
+import java.time.Instant;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A session represents an embedded database connection. When using the server
  * mode, this object resides on the server side and communicates with a
  * SessionRemote object on the client side.
+ * 一个会话代表一个嵌入式数据库连接。 使用服务器时
+ *   模式下，该对象驻留在服务器端并与
+ *   客户端的 SessionRemote 对象交流。
  */
 public final class SessionLocal extends Session implements TransactionStore.RollbackListener {
 
@@ -694,6 +677,9 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
         // On rare occasions it can be called concurrently (i.e. from close())
         // without proper locking, but instead of oversynchronizing
         // we just skip this optional operation in such case
+        // 在极少数情况下，它可以同时调用（即从 close() 调用）
+        // 没有适当的锁定，但不是过度同步
+        // 在这种情况下我们只是跳过这个可选操作
         if (tablesToAnalyze != null &&
                 Thread.holdsLock(this)) {
             // take a local copy and clear because in rare cases we can call

@@ -5,21 +5,6 @@
  */
 package org.h2.value;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.Reader;
-import java.math.BigDecimal;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
-
 import org.h2.api.ErrorCode;
 import org.h2.api.IntervalQualifier;
 import org.h2.engine.Constants;
@@ -29,19 +14,26 @@ import org.h2.security.SHA256;
 import org.h2.store.Data;
 import org.h2.store.DataReader;
 import org.h2.util.Bits;
-import org.h2.util.DateTimeUtils;
-import org.h2.util.IOUtils;
-import org.h2.util.MathUtils;
-import org.h2.util.NetUtils;
-import org.h2.util.StringUtils;
-import org.h2.util.Utils;
+import org.h2.util.*;
 import org.h2.value.lob.LobData;
 import org.h2.value.lob.LobDataDatabase;
 import org.h2.value.lob.LobDataFetchOnDemand;
 
+import java.io.*;
+import java.math.BigDecimal;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 /**
  * The transfer class is used to send and receive Value objects.
- * It is used on both the client side, and on the server side.
+ *  * It is used on both the client side, and on the server side.
+ *  传输类用于发送和接收值对象。
+ *   * 它用于客户端和服务器端。
  */
 public final class Transfer {
 

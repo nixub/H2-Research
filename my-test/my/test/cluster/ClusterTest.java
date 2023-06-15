@@ -1,13 +1,12 @@
 package my.test.cluster;
 
-import static junit.framework.Assert.assertEquals;
+import my.test.TestBase;
+import org.junit.Assert;
 
 import java.sql.SQLException;
 import java.sql.Savepoint;
 
-import my.test.TestBase;
-
-import org.junit.Assert;
+import static junit.framework.Assert.assertEquals;
 
 public class ClusterTest extends TestBase {
     public static void main(String[] args) throws Exception {

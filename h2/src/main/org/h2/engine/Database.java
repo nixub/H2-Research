@@ -5,20 +5,6 @@
  */
 package org.h2.engine;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
 import org.h2.api.DatabaseEventListener;
 import org.h2.api.ErrorCode;
 import org.h2.api.JavaObjectSerializer;
@@ -44,46 +30,23 @@ import org.h2.mvstore.db.Store;
 import org.h2.result.Row;
 import org.h2.result.RowFactory;
 import org.h2.result.SearchRow;
-import org.h2.schema.InformationSchema;
-import org.h2.schema.Schema;
-import org.h2.schema.SchemaObject;
-import org.h2.schema.Sequence;
-import org.h2.schema.TriggerObject;
+import org.h2.schema.*;
 import org.h2.security.auth.Authenticator;
-import org.h2.store.DataHandler;
-import org.h2.store.FileLock;
-import org.h2.store.FileLockMethod;
-import org.h2.store.FileStore;
-import org.h2.store.InDoubtTransaction;
-import org.h2.store.LobStorageFrontend;
-import org.h2.store.LobStorageInterface;
+import org.h2.store.*;
 import org.h2.store.fs.FileUtils;
 import org.h2.store.fs.encrypt.FileEncrypt;
-import org.h2.table.Column;
-import org.h2.table.IndexColumn;
-import org.h2.table.Table;
-import org.h2.table.TableLinkConnection;
-import org.h2.table.TableSynonym;
-import org.h2.table.TableType;
-import org.h2.table.TableView;
+import org.h2.table.*;
 import org.h2.tools.DeleteDbFiles;
 import org.h2.tools.Server;
-import org.h2.util.JdbcUtils;
-import org.h2.util.MathUtils;
-import org.h2.util.NetUtils;
-import org.h2.util.NetworkConnectionInfo;
-import org.h2.util.SmallLRUCache;
-import org.h2.util.SourceCompiler;
-import org.h2.util.StringUtils;
-import org.h2.util.TempFileDeleter;
-import org.h2.util.TimeZoneProvider;
-import org.h2.util.Utils;
-import org.h2.value.CaseInsensitiveConcurrentMap;
-import org.h2.value.CaseInsensitiveMap;
-import org.h2.value.CompareMode;
-import org.h2.value.TypeInfo;
-import org.h2.value.ValueInteger;
-import org.h2.value.ValueTimestampTimeZone;
+import org.h2.util.*;
+import org.h2.value.*;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * There is one database object per open database.
@@ -1881,7 +1844,7 @@ public final class Database implements DataHandler, CastDataProvider {
     /**
      * Set the progress of a long running operation.
      * This method calls the {@link DatabaseEventListener} if one is registered.
-     *
+     *设置长时间运行操作的进度。
      * @param state the {@link DatabaseEventListener} state
      * @param name the object name
      * @param x the current position

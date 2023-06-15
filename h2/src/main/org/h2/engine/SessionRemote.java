@@ -5,10 +5,6 @@
  */
 package org.h2.engine;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import org.h2.api.DatabaseEventListener;
 import org.h2.api.ErrorCode;
 import org.h2.api.JavaObjectSerializer;
@@ -29,23 +25,13 @@ import org.h2.store.DataHandler;
 import org.h2.store.FileStore;
 import org.h2.store.LobStorageFrontend;
 import org.h2.store.fs.FileUtils;
-import org.h2.util.DateTimeUtils;
-import org.h2.util.JdbcUtils;
-import org.h2.util.MathUtils;
-import org.h2.util.NetUtils;
-import org.h2.util.NetworkConnectionInfo;
-import org.h2.util.SmallLRUCache;
-import org.h2.util.StringUtils;
-import org.h2.util.TempFileDeleter;
-import org.h2.util.TimeZoneProvider;
-import org.h2.util.Utils;
-import org.h2.value.CompareMode;
-import org.h2.value.Transfer;
-import org.h2.value.Value;
-import org.h2.value.ValueInteger;
-import org.h2.value.ValueLob;
-import org.h2.value.ValueTimestampTimeZone;
-import org.h2.value.ValueVarchar;
+import org.h2.util.*;
+import org.h2.value.*;
+
+import java.io.IOException;
+import java.net.Socket;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * The client side part of a session when using the server mode. This object
@@ -127,7 +113,7 @@ public final class SessionRemote extends Session implements DataHandler {
         }
         return serverList;
     }
-
+    //初始化阶段  传输协议
     private Transfer initTransfer(ConnectionInfo ci, String db, String server)
             throws IOException {
         Socket socket = NetUtils.createSocket(server, Constants.DEFAULT_TCP_PORT, ci.isSSL(),
@@ -154,6 +140,7 @@ public final class SessionRemote extends Session implements DataHandler {
             if (ci.getFileEncryptionKey() != null) {
                 trans.writeBytes(ci.getFileEncryptionKey());
             }
+            //发送一个sessionid
             trans.writeInt(SessionRemote.SESSION_SET_ID);
             trans.writeString(sessionId);
             if (clientVersion >= Constants.TCP_PROTOCOL_VERSION_20) {
@@ -366,7 +353,7 @@ public final class SessionRemote extends Session implements DataHandler {
             throw e;
         }
     }
-
+    // 连接协议
     private void connectServer(ConnectionInfo ci) {
         String name = ci.getName(); //例如: "//localhost:9092/mydb"
         if (name.startsWith("//")) {

@@ -9,19 +9,18 @@ public class PageBtreeIndexTest extends TestBase {
 
 	@Override
 	public void init() throws Exception {
-		//prop.setProperty("PAGE_SIZE", "2048");
+		prop.setProperty("PAGE_SIZE", "2048");
 		
-		//prop.setProperty("mode", "Derby");
-		//prop.setProperty("mode", "oracle");
+		prop.setProperty("mode", "Derby");
+		prop.setProperty("mode", "oracle");
 	}
 
 	@Override
 	public void startInternal() throws Exception {
-		//find();
-		//findFirstOrLast();
-
-		//split();
-		//remove();
+		find();
+		findFirstOrLast();
+		split();
+		remove();
 		containsNullAndAllowMultipleNull();
 	}
 	public void containsNullAndAllowMultipleNull() throws Exception {

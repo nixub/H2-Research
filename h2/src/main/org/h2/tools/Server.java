@@ -5,10 +5,6 @@
  */
 package org.h2.tools;
 
-import java.net.URI;
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import org.h2.api.ErrorCode;
 import org.h2.engine.SysProperties;
 import org.h2.message.DbException;
@@ -20,6 +16,10 @@ import org.h2.server.web.WebServer;
 import org.h2.util.StringUtils;
 import org.h2.util.Tool;
 import org.h2.util.Utils;
+
+import java.net.URI;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * Starts the H2 Console (web-) server, TCP, and PG server.
@@ -314,9 +314,13 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
                     tcpShutdownForce, false);
         }
         try {
+            // 开始创建tcp 连接
             if (tcpStart) {
+                // 创建一个tcp 服务器，但还没启动
                 tcp = createTcpServer(args);
+                // 启动tcp 服务器
                 tcp.start();
+                // 控制台输出
                 out.println(tcp.getStatus());
                 tcp.setShutdownHandler(this);
             }
@@ -508,6 +512,7 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
     public Server start() throws SQLException {
         try {
             started = true;
+            //
             service.start();
             String url = service.getURL();
             int idx = url.indexOf('?');

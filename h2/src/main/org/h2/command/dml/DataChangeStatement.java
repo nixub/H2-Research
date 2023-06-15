@@ -63,7 +63,7 @@ public abstract class DataChangeStatement extends Prepared {
 
     /**
      * Execute the statement with specified delta change collector and collection mode.
-     *
+     *使用指定的增量更改收集器和收集模式执行语句。
      * @param deltaChangeCollector
      *            target result
      * @param deltaChangeCollectionMode

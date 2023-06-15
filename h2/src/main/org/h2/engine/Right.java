@@ -13,6 +13,7 @@ import org.h2.table.Table;
 /**
  * An access right. Rights are regular database objects, but have generated
  * names.
+ * 访问权限
  */
 //一个Right实例对应一条GRANT ROLE或GRANT RIGHT语句
 public final class Right extends DbObject {

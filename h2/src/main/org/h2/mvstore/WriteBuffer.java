@@ -8,7 +8,7 @@ package org.h2.mvstore;
 import java.nio.ByteBuffer;
 
 /**
- * An auto-resize buffer to write data into a ByteBuffer.
+ * An auto-resize buffer to write data into a ByteBuffer.  一个自动调整大小的缓冲区，用于将数据写入bytebuffer
  */
 public class WriteBuffer {
 

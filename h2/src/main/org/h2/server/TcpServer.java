@@ -5,6 +5,12 @@
  */
 package org.h2.server;
 
+import org.h2.api.ErrorCode;
+import org.h2.engine.Constants;
+import org.h2.jdbc.JdbcConnection;
+import org.h2.message.DbException;
+import org.h2.util.*;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -17,16 +23,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.h2.api.ErrorCode;
-import org.h2.engine.Constants;
-import org.h2.jdbc.JdbcConnection;
-import org.h2.message.DbException;
-import org.h2.util.MathUtils;
-import org.h2.util.NetUtils;
-import org.h2.util.StringUtils;
-import org.h2.util.Tool;
-import org.h2.util.Utils10;
 
 /**
  * The TCP server implements the native H2 database server protocol.
@@ -271,6 +267,7 @@ public class TcpServer implements Service {
                 //s.setSoTimeout(2000); //我加上的
                 Utils10.setTcpQuickack(s, true);
                 int id = nextThreadId++;
+                //该方法有具体的socket连接，传输对象
                 TcpServerThread c = new TcpServerThread(s, this, id);
                 running.add(c);
                 //TcpServerThread线程名是: "H2 TCP Server (tcp://localhost:9092) thread"

@@ -5,12 +5,6 @@
  */
 package org.h2.jdbc;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.Statement;
-import java.util.ArrayList;
 import org.h2.api.ErrorCode;
 import org.h2.command.CommandInterface;
 import org.h2.engine.Session;
@@ -23,6 +17,9 @@ import org.h2.result.SimpleResult;
 import org.h2.util.ParserUtil;
 import org.h2.util.StringUtils;
 import org.h2.util.Utils;
+
+import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * Represents a statement.
@@ -194,6 +191,7 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
         closeOldResultSet();
         sql = JdbcConnection.translateSQL(sql, escapeProcessing);
         CommandInterface command = conn.prepareCommand(sql, fetchSize);
+        //锁住，防止其他回话改数据，照常数据不一致
         synchronized (session) {
             setExecutingStatement(command);
             try {

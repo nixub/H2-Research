@@ -5,12 +5,13 @@
  */
 package org.h2.mvstore.tx;
 
-import java.util.function.Function;
 import org.h2.mvstore.DataUtils;
 import org.h2.mvstore.MVMap;
 import org.h2.mvstore.MVMap.Decision;
 import org.h2.mvstore.type.DataType;
 import org.h2.value.VersionedValue;
+
+import java.util.function.Function;
 
 /**
  * Class TxDecisionMaker is a base implementation of MVMap.DecisionMaker
@@ -65,7 +66,7 @@ class TxDecisionMaker<K,V> extends MVMap.DecisionMaker<VersionedValue<V>> {
         decision = null;
         reset();
     }
-
+    //决定如何进行更新。
     @Override
     public MVMap.Decision decide(VersionedValue<V> existingValue, VersionedValue<V> providedValue) {
         assert decision == null;

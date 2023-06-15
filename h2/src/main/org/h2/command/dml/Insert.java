@@ -5,10 +5,6 @@
  */
 package org.h2.command.dml;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map.Entry;
-
 import org.h2.api.ErrorCode;
 import org.h2.api.Trigger;
 import org.h2.command.Command;
@@ -17,11 +13,7 @@ import org.h2.command.query.Query;
 import org.h2.engine.DbObject;
 import org.h2.engine.Right;
 import org.h2.engine.SessionLocal;
-import org.h2.expression.Expression;
-import org.h2.expression.ExpressionColumn;
-import org.h2.expression.ExpressionVisitor;
-import org.h2.expression.Parameter;
-import org.h2.expression.ValueExpression;
+import org.h2.expression.*;
 import org.h2.expression.condition.Comparison;
 import org.h2.expression.condition.ConditionAndOr;
 import org.h2.index.Index;
@@ -36,6 +28,10 @@ import org.h2.table.DataChangeDeltaTable.ResultOption;
 import org.h2.table.Table;
 import org.h2.util.HasSQL;
 import org.h2.value.Value;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map.Entry;
 
 /**
  * This class represents the statement
@@ -127,18 +123,20 @@ public final class Insert extends CommandWithValues implements ResultTarget {
         }
     }
 
+    //插入数据也走了这个方法
     @Override
     public long update(ResultTarget deltaChangeCollector, ResultOption deltaChangeCollectionMode) {
         this.deltaChangeCollector = deltaChangeCollector;
         this.deltaChangeCollectionMode = deltaChangeCollectionMode;
         try {
+
             return insertRows();
         } finally {
             this.deltaChangeCollector = null;
             this.deltaChangeCollectionMode = null;
         }
     }
-
+    //当插入一个数据时，所执行的逻辑
     private long insertRows() {
         session.getUser().checkTableRight(table, Right.INSERT);
         setCurrentRowNumber(0);
@@ -148,9 +146,12 @@ public final class Insert extends CommandWithValues implements ResultTarget {
         if (listSize > 0) {
             int columnLen = columns.length;
             for (int x = 0; x < listSize; x++) {
+                //根据模板 获取行对象，实现略微复杂 ，用到工厂模式。
                 Row newRow = table.getTemplateRow(); //newRow的长度是全表字段的个数，会>=columns的长度
+                // expr  就是传来的数据 数组  ---表达式是查询中的操作、值或函数。
                 Expression[] expr = valuesExpressionList.get(x);
                 setCurrentRowNumber(x + 1);
+                //把值循环放到行对象中
                 for (int i = 0; i < columnLen; i++) {
                     Column c = columns[i];
                     int index = c.getColumnId(); //从0开始
@@ -164,6 +165,11 @@ public final class Insert extends CommandWithValues implements ResultTarget {
                     }
                 }
                 rowNumber++;
+                //为 INSERT 操作准备指定的行。  如何理解？
+                //      *
+                //      * 评估身份、默认值和生成值，所有值都是
+                //      * 转换为目标数据类型并经过验证。 身份基础值
+                //      * 列在兼容模式需要时更新。
                 table.convertInsertRow(session, newRow, overridingSystem);
                 if (deltaChangeCollectionMode == ResultOption.NEW) {
                     deltaChangeCollector.addRow(newRow.getValueList().clone());

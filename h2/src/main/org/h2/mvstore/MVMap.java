@@ -5,23 +5,16 @@
  */
 package org.h2.mvstore;
 
-import static org.h2.engine.Constants.MEMORY_POINTER;
+import org.h2.mvstore.type.DataType;
+import org.h2.mvstore.type.ObjectDataType;
+import org.h2.util.MemoryEstimator;
 
-import java.util.AbstractList;
-import java.util.AbstractMap;
-import java.util.AbstractSet;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.h2.mvstore.type.DataType;
-import org.h2.mvstore.type.ObjectDataType;
-import org.h2.util.MemoryEstimator;
+import static org.h2.engine.Constants.MEMORY_POINTER;
 
 /**
  * A stored map.
@@ -175,7 +168,7 @@ public class MVMap<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V
     }
 
     /**
-     * Get the key at the given index.
+     * Get the key at the given index. 获取指定索引的键
      * <p>
      * This is a O(log(size)) operation.
      *
@@ -809,7 +802,7 @@ public class MVMap<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V
 
     /**
      * The current root page (may not be null).
-     *
+     * 根页面
      * @return the root page
      */
     public final Page<K,V> getRootPage() {
@@ -1209,6 +1202,8 @@ public class MVMap<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V
     /**
      * If map was used in append mode, this method will ensure that append buffer
      * is flushed - emptied with all entries inserted into map as a new leaf.
+     * 如果 map 以追加模式使用，此方法将确保追加缓冲区
+     *       被刷新 - 清空所有条目作为新叶子插入地图。
      * @param rootReference current RootReference
      * @param fullFlush whether buffer should be completely flushed,
      *                 otherwise just a single empty slot is required
@@ -1365,6 +1360,7 @@ public class MVMap<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V
      * neither concurrently, nor in combination with any method that updates this map.
      * Non-updating method may be used concurrently, but latest appended values
      * are not guaranteed to be visible.
+     * 将条目附加到此地图。 此方法不是线程安全的
      * @param key should be higher in map's order than any existing key
      * @param value to be appended
      */
@@ -1684,7 +1680,7 @@ public class MVMap<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V
         };
 
         /**
-         * Makes a decision about how to proceed with the update.
+         * Makes a decision about how to proceed with the update. 决定如何进行更新。
          *
          * @param existingValue the old value
          * @param providedValue the new value
@@ -1729,7 +1725,7 @@ public class MVMap<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V
     }
 
     /**
-     * Add, replace or remove a key-value pair.
+     * Add, replace or remove a key-value pair.  添加、替换或删除键值对。
      *
      * @param key the key (may not be null)
      * @param value new value, it may be null when removal is intended

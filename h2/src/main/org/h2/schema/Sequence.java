@@ -19,6 +19,7 @@ import org.h2.value.ValueBigint;
 /**
  * A sequence is created using the statement
  * CREATE SEQUENCE
+ * 使用语句创建序列
  */
 public final class Sequence extends SchemaObject {
 

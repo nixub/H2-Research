@@ -5,10 +5,6 @@
  */
 package org.h2.mvstore.db;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.concurrent.atomic.AtomicLong;
 import org.h2.api.ErrorCode;
 import org.h2.command.query.AllColumnsForPlan;
 import org.h2.engine.Database;
@@ -32,6 +28,11 @@ import org.h2.value.Value;
 import org.h2.value.ValueLob;
 import org.h2.value.ValueNull;
 import org.h2.value.VersionedValue;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * A table stored in a MVStore.
@@ -206,7 +207,7 @@ public class MVPrimaryIndex extends MVIndex<Long, SearchRow> {
 
     /**
      * Lock a single row.
-     *
+     * 行锁
      * @param session database session
      * @param row to lock
      * @return row object if it exists

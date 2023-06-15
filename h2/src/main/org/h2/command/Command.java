@@ -5,9 +5,6 @@
  */
 package org.h2.command;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Set;
 import org.h2.api.ErrorCode;
 import org.h2.engine.Constants;
 import org.h2.engine.Database;
@@ -21,6 +18,10 @@ import org.h2.result.ResultInterface;
 import org.h2.result.ResultWithGeneratedKeys;
 import org.h2.result.ResultWithPaddedStrings;
 import org.h2.util.Utils;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Represents a SQL statement. This object is only used on the server side.
@@ -234,7 +235,7 @@ public abstract class Command implements CommandInterface {
             }
         }
     }
-
+    //返回更新计数和生成的秘钥。
     @Override
     public ResultWithGeneratedKeys executeUpdate(Object generatedKeysRequest) {
         long start = 0;
@@ -251,6 +252,7 @@ public abstract class Command implements CommandInterface {
                 while (true) {
                     database.checkPowerOff();
                     try {
+                        //执行 data 改变的逻辑
                         return update(generatedKeysRequest);
                     } catch (DbException e) {
                         // cannot retry DDL

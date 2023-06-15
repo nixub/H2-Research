@@ -5,9 +5,6 @@
  */
 package org.h2.engine;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 import org.h2.api.ErrorCode;
 import org.h2.command.CommandInterface;
 import org.h2.command.dml.SetTypes;
@@ -17,18 +14,19 @@ import org.h2.security.auth.AuthenticationException;
 import org.h2.security.auth.AuthenticationInfo;
 import org.h2.security.auth.Authenticator;
 import org.h2.store.fs.FileUtils;
-import org.h2.util.DateTimeUtils;
-import org.h2.util.MathUtils;
-import org.h2.util.ParserUtil;
-import org.h2.util.StringUtils;
-import org.h2.util.ThreadDeadlockDetector;
-import org.h2.util.TimeZoneProvider;
-import org.h2.util.Utils;
+import org.h2.util.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * The engine contains a map of all open databases.
  * It is also responsible for opening and creating new databases.
  * This is a singleton class.
+ * 该引擎包含所有打开的数据库的映射。
+ *  *   * 它还负责打开和创建新的数据库。
+ *  *   * 这是一个单例类。
  */
 public final class Engine {
 

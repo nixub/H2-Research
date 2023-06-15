@@ -5,10 +5,6 @@
  */
 package org.h2.command;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import org.h2.api.DatabaseEventListener;
 import org.h2.api.ErrorCode;
 import org.h2.command.ddl.DefineCommand;
@@ -35,14 +31,23 @@ import org.h2.util.StringUtils;
 import org.h2.util.Utils;
 import org.h2.value.Value;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * Represents a single SQL statements.
  * It wraps a prepared statement.
+ *
+ * 表示单个SQL 语句，他包装了一个准备好的语句
  */
 public class CommandContainer extends Command {
 
     /**
      * Collector of generated keys.
+     *
+     * 生成秘钥收集器
      */
     private static final class GeneratedKeysCollector implements ResultTarget {
 
@@ -158,12 +163,18 @@ public class CommandContainer extends Command {
 
     @Override
     public ResultWithGeneratedKeys update(Object generatedKeysRequest) {
+        //重新解析并prepare
         recompileIfRequired();
+        //设置长时间操作的进度
         setProgress(DatabaseEventListener.STATE_STATEMENT_START);
+        //开始计算操作耗时
         start();
+        //检测预处理语句的参数
         prepared.checkParameters();
+
         ResultWithGeneratedKeys result;
         if (generatedKeysRequest != null && !Boolean.FALSE.equals(generatedKeysRequest)) {
+            //判断预处理语句的类型。
             if (prepared instanceof DataChangeStatement && prepared.getType() != CommandInterface.DELETE) {
                 result = executeUpdateWithGeneratedKeys((DataChangeStatement) prepared,
                         generatedKeysRequest);
@@ -249,6 +260,7 @@ public class CommandContainer extends Command {
 
     @Override
     public ResultInterface query(long maxrows) {
+        //
         recompileIfRequired();
         setProgress(DatabaseEventListener.STATE_STATEMENT_START);
         start();

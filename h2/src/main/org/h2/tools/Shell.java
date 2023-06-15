@@ -5,30 +5,16 @@
  */
 package org.h2.tools;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.io.StringReader;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Properties;
-import java.util.concurrent.TimeUnit;
-
 import org.h2.api.ErrorCode;
 import org.h2.engine.Constants;
 import org.h2.server.web.ConnectionInfo;
-import org.h2.util.JdbcUtils;
-import org.h2.util.ScriptReader;
-import org.h2.util.SortedProperties;
-import org.h2.util.StringUtils;
-import org.h2.util.Tool;
-import org.h2.util.Utils;
+import org.h2.util.*;
+
+import java.io.*;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Interactive command line tool to access a database using JDBC.
@@ -191,7 +177,7 @@ public class Shell extends Tool implements Runnable {
         println("quit or exit   Close the connection and exit");
         println("");
     }
-
+    //提示循环
     private void promptLoop() {
         println("");
         println("Welcome to H2 Shell " + Constants.FULL_VERSION);
@@ -214,19 +200,23 @@ public class Shell extends Tool implements Runnable {
                 } else {
                     print("...> ");
                 }
+                // 获取到输入的行
                 String line = readLine();
                 if (line == null) {
                     break;
                 }
+                //返回此字符串，删除前置空格和尾随空格。
                 String trimmed = line.trim();
                 if (trimmed.isEmpty()) {
                     continue;
                 }
+                //判断此字符串是不是以指定字符串结尾
                 boolean end = trimmed.endsWith(";");
                 if (end) {
                     line = line.substring(0, line.lastIndexOf(';'));
                     trimmed = trimmed.substring(0, trimmed.length() - 1);
                 }
+                //大小写转换
                 String lower = StringUtils.toLowerEnglish(trimmed);
                 if ("exit".equals(lower) || "quit".equals(lower)) {
                     break;
@@ -265,6 +255,7 @@ public class Shell extends Tool implements Runnable {
                     }
                     println("Maximum column width is now " + maxColumnSize);
                 } else {
+                    // 开始处理SQL 相关的语句
                     boolean addToHistory = true;
                     if (statement == null) {
                         if (StringUtils.isNumber(line)) {
@@ -470,6 +461,7 @@ public class Shell extends Tool implements Runnable {
                 if (sql.startsWith("@")) {
                     rs = JdbcUtils.getMetaResultSet(conn, sql);
                     printResult(rs, listMode);
+                    //把SQL 发送到 引擎去解析并处理
                 } else if (stat.execute(sql)) {
                     rs = stat.getResultSet();
                     time = System.nanoTime() - time;

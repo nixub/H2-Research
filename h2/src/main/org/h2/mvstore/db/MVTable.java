@@ -5,10 +5,6 @@
  */
 package org.h2.mvstore.db;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 import org.h2.api.DatabaseEventListener;
 import org.h2.api.ErrorCode;
 import org.h2.command.ddl.CreateTableData;
@@ -30,6 +26,11 @@ import org.h2.table.IndexColumn;
 import org.h2.table.RegularTable;
 import org.h2.util.DebuggingThreadLocal;
 import org.h2.util.Utils;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * A table stored in a MVStore.
@@ -122,6 +123,8 @@ public class MVTable extends RegularTable {
         return primaryIndex.getMapName();
     }
 
+    //锁定给定会话的表。
+    //      * 此方法等待直到锁定被释放。
     @Override
     public boolean lock(SessionLocal session, boolean exclusive,
             boolean forceLockEvenInMvcc) {

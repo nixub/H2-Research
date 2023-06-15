@@ -5,16 +5,16 @@
  */
 package org.h2.mvstore;
 
+import org.h2.util.StringUtils;
+
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.BitSet;
 import java.util.Comparator;
 import java.util.Map;
 
-import org.h2.util.StringUtils;
-
 /**
- * A chunk of data, containing one or multiple pages.
+ * A chunk of data, containing one or multiple pages.  一大块数据，包含一页或多页。
  * <p>
  * Minimum chunk size is usually 4096 bytes, and it grows in those fixed increments (blocks).
  * Chunk's length and it's position in the underlying filestore

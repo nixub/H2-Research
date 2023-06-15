@@ -5,8 +5,6 @@
  */
 package org.h2.mvstore.db;
 
-import java.util.List;
-
 import org.h2.index.Index;
 import org.h2.index.IndexType;
 import org.h2.mvstore.MVMap;
@@ -15,8 +13,10 @@ import org.h2.table.IndexColumn;
 import org.h2.table.Table;
 import org.h2.value.VersionedValue;
 
+import java.util.List;
+
 /**
- * An index that stores the data in an MVStore.
+ * An index that stores the data in an MVStore.将数据存储在 MVStore 中的索引。
  */
 public abstract class MVIndex<K,V> extends Index {
 

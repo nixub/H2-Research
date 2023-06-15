@@ -5,41 +5,23 @@
  */
 package org.h2.tools;
 
+import org.h2.api.ErrorCode;
+import org.h2.message.DbException;
+import org.h2.util.*;
+import org.h2.value.DataType;
+import org.h2.value.Value;
+import org.h2.value.ValueToObjectConverter;
+
 import java.io.InputStream;
 import java.io.Reader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URL;
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.Date;
-import java.sql.NClob;
-import java.sql.Ref;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.RowId;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.SQLXML;
-import java.sql.Statement;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.sql.Types;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.UUID;
-import org.h2.api.ErrorCode;
-import org.h2.message.DbException;
-import org.h2.util.Bits;
-import org.h2.util.JdbcUtils;
-import org.h2.util.MathUtils;
-import org.h2.util.SimpleColumnInfo;
-import org.h2.util.Utils;
-import org.h2.value.DataType;
-import org.h2.value.Value;
-import org.h2.value.ValueToObjectConverter;
 
 /**
  * This class is a simple result set and meta data implementation.
@@ -49,7 +31,7 @@ import org.h2.value.ValueToObjectConverter;
  * It can be extended easily if required.
  *
  * An application can create a result set using the following code:
- *
+ *应用程序可以使用下面的代码创建结果集
  * <pre>
  * SimpleResultSet rs = new SimpleResultSet();
  * rs.addColumn(&quot;ID&quot;, Types.INTEGER, 10, 0);

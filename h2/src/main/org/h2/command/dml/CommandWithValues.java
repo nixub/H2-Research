@@ -5,14 +5,14 @@
  */
 package org.h2.command.dml;
 
-import java.util.ArrayList;
-
 import org.h2.engine.SessionLocal;
 import org.h2.expression.Expression;
 import org.h2.util.Utils;
 
+import java.util.ArrayList;
+
 /**
- * Command that supports VALUES clause.
+ * Command that supports VALUES clause.支持 VALUES 子句的命令。
  */
 public abstract class CommandWithValues extends DataChangeStatement {
 

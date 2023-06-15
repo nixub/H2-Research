@@ -5,21 +5,25 @@
  */
 package org.h2.mvstore;
 
+import org.h2.mvstore.cache.FilePathCache;
+import org.h2.store.fs.FilePath;
+import org.h2.store.fs.encrypt.FileEncrypt;
+import org.h2.store.fs.encrypt.FilePathEncrypt;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
 import java.util.concurrent.atomic.AtomicLong;
-import org.h2.mvstore.cache.FilePathCache;
-import org.h2.store.fs.FilePath;
-import org.h2.store.fs.encrypt.FileEncrypt;
-import org.h2.store.fs.encrypt.FilePathEncrypt;
 
 /**
  * The default storage mechanism of the MVStore. This implementation persists
  * data to a file. The file store is responsible to persist data and for free
  * space management.
+ * MVStore的默认存储机制。 这个实现仍然存在
+ * 数据到文件。 文件存储负责持久化数据并且免费
+ * 空间管理。
  */
 public class FileStore {
 

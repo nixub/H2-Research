@@ -5,16 +5,16 @@
  */
 package org.h2.mvstore;
 
-import static org.h2.engine.Constants.MEMORY_ARRAY;
-import static org.h2.engine.Constants.MEMORY_OBJECT;
-import static org.h2.engine.Constants.MEMORY_POINTER;
-import static org.h2.mvstore.DataUtils.PAGE_TYPE_LEAF;
+import org.h2.compress.Compressor;
+import org.h2.util.Utils;
+
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
-import org.h2.compress.Compressor;
-import org.h2.util.Utils;
+
+import static org.h2.engine.Constants.*;
+import static org.h2.mvstore.DataUtils.PAGE_TYPE_LEAF;
 
 /**
  * A page (a node or a leaf).
@@ -233,7 +233,7 @@ public abstract class Page<K,V> implements Cloneable {
     }
 
     /**
-     * Read a page.
+     * Read a page.读取一个页
      *
      * @param buff ByteBuffer containing serialized page info
      * @param pos the position
@@ -683,11 +683,11 @@ public abstract class Page<K,V> implements Cloneable {
     }
 
     /**
-     * Store the page and update the position.
+     * Store the page and update the position. 存储页面更新位置
      *
      * @param chunk the chunk
      * @param buff the target buffer
-     * @param toc prospective table of content
+     * @param toc prospective table of content 预期目录
      * @return the position of the buffer just after the type
      */
     protected final int write(Chunk chunk, WriteBuffer buff, List<Long> toc) {
@@ -878,7 +878,7 @@ public abstract class Page<K,V> implements Cloneable {
     }
 
     /**
-     * Recalculate estimated memory used in persistent case.
+     * Recalculate estimated memory used in persistent case. 重新计算在持久情况下使用的内存
      */
     final void recalculateMemory() {
         assert isPersistent();

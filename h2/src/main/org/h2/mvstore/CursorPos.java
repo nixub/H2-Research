@@ -10,12 +10,16 @@ package org.h2.mvstore;
  * Instance represents a node in the linked list, which traces path
  * from a specific (target) key within a leaf node all the way up to te root
  * (bottom up path).
+ * 游标中的一个位置。
+ *  Instance代表链表中的一个节点，它追踪路径
+ *  从叶节点中的特定（目标）键一直到根
+ *  自下而上的路径）。
  */
 //遍历B-Tree时通过它能向上或向右指定节点
 public final class CursorPos<K,V> {
 
     /**
-     * The page at the current level.
+     * The page at the current level. 页的当前层级
      */
     public Page<K,V> page;
 
@@ -43,6 +47,9 @@ public final class CursorPos<K,V> {
      * Searches for a given key and creates a breadcrumb trail through a B-tree
      * rooted at a given Page. Resulting path starts at "insertion point" for a
      * given key and goes back to the root.
+     * 搜索给定的键并通过 B 树创建面包屑路径
+     *       *植根于给定的页面。 结果路径从“插入点”开始
+     *       * 给定密钥并返回到根。
      *
      * @param page      root of the tree
      * @param key       the key to search for

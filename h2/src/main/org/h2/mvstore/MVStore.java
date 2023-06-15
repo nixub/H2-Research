@@ -5,42 +5,6 @@
  */
 package org.h2.mvstore;
 
-import static org.h2.mvstore.MVMap.INITIAL_VERSION;
-import java.lang.Thread.UncaughtExceptionHandler;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.BitSet;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.PriorityBlockingQueue;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 import org.h2.compress.CompressDeflate;
 import org.h2.compress.CompressLZF;
 import org.h2.compress.Compressor;
@@ -48,6 +12,21 @@ import org.h2.mvstore.cache.CacheLongKeyLIRS;
 import org.h2.mvstore.type.StringDataType;
 import org.h2.util.MathUtils;
 import org.h2.util.Utils;
+
+import java.lang.Thread.UncaughtExceptionHandler;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+
+import static org.h2.mvstore.MVMap.INITIAL_VERSION;
 
 /*
 
@@ -242,11 +221,14 @@ public class MVStore implements AutoCloseable {
      * Cache for chunks "Table of Content" used to translate page's
      * sequential number within containing chunk into byte position
      * within chunk's image. Cache keyed by chunk id.
+     * 缓存用于翻译页面的块“目录”
+     * 包含块内的序号到字节位置
+     * 在块的图像中。 由块 ID 键控的缓存。
      */
     private final CacheLongKeyLIRS<long[]> chunksToC;
 
     /**
-     * The newest chunk. If nothing was stored yet, this field is not set.
+     * The newest chunk. If nothing was stored yet, this field is not set. 最新的块。 如果尚未存储任何内容，则未设置此字段。
      */
     private volatile Chunk lastChunk;
 
@@ -265,6 +247,8 @@ public class MVStore implements AutoCloseable {
     /**
      * The layout map. Contains chunks metadata and root locations for all maps.
      * This is relatively fast changing part of metadata
+     * 布局图。 包含所有地图的块元数据和根位置。
+     *       * 这是元数据变化相对较快的部分
      */
     private final MVMap<String, String> layout;
 
@@ -372,6 +356,8 @@ public class MVStore implements AutoCloseable {
      * @throws MVStoreException if the file is corrupt, or an exception
      *             occurred while opening
      * @throws IllegalArgumentException if the directory does not exist
+     *
+     * mvstore 的 初始化
      */
     MVStore(Map<String, Object> config) {
         recoveryMode = config.containsKey("recoveryMode");
@@ -420,7 +406,9 @@ public class MVStore implements AutoCloseable {
         if (cache != null && pgSplitSize > cache.getMaxItemSize()) {
             pgSplitSize = (int)cache.getMaxItemSize();
         }
+        //页拆分大小
         pageSplitSize = pgSplitSize;
+        // 每页键数
         keysPerPage = DataUtils.getConfigParam(config, "keysPerPage", 48);
         backgroundExceptionHandler =
                 (UncaughtExceptionHandler)config.get("backgroundExceptionHandler");
@@ -430,7 +418,9 @@ public class MVStore implements AutoCloseable {
             // 19 KB memory is about 1 KB storage
             int kb = Math.max(1, Math.min(19, Utils.scaleForAvailableMemory(64))) * 1024;
             kb = DataUtils.getConfigParam(config, "autoCommitBufferSize", kb);
+            //自动提交内存
             autoCommitMemory = kb * 1024;
+            // 自动压缩填充比例
             autoCompactFillRate = DataUtils.getConfigParam(config, "autoCompactFillRate", 90);
             char[] encryptionKey = (char[]) config.get("encryptionKey");
             // there is no need to lock store here, since it is not opened (or even created) yet,
@@ -824,13 +814,13 @@ public class MVStore implements AutoCloseable {
         Chunk newest = null;
         boolean assumeCleanShutdown = true;
         boolean validStoreHeader = false;
-        // find out which chunk and version are the newest
-        // read the first two blocks
+        // find out which chunk and version are the newest  找出哪个版本是最新的。
+        // read the first two blocks  读取前两个块
         ByteBuffer fileHeaderBlocks = fileStore.readFully(0, 2 * BLOCK_SIZE);
         byte[] buff = new byte[BLOCK_SIZE];
         for (int i = 0; i <= BLOCK_SIZE; i += BLOCK_SIZE) {
             fileHeaderBlocks.get(buff);
-            // the following can fail for various reasons
+            // the following can fail for various reasons  由于各种原因，以下可能会失败
             try {
                 HashMap<String, String> m = DataUtils.parseChecksummedMap(buff);
                 if (m == null) {
@@ -838,7 +828,7 @@ public class MVStore implements AutoCloseable {
                     continue;
                 }
                 long version = DataUtils.readHexLong(m, HDR_VERSION, 0);
-                // if both header blocks do agree on version
+                // if both header blocks do agree on version 如果两个标头块都同意的版本
                 // we'll continue on happy path - assume that previous shutdown was clean
                 assumeCleanShutdown = assumeCleanShutdown && (newest == null || version == newest.version);
                 if (newest == null || version > newest.version) {
@@ -2572,6 +2562,7 @@ public class MVStore implements AutoCloseable {
                             "Unable to read the page at position {0}, chunk {1}, offset {2}",
                             pos, chunk.id, pageOffset, e);
                 }
+                //把page 加载到缓存
                 cachePage(p);
             }
             return p;
@@ -3449,6 +3440,7 @@ public class MVStore implements AutoCloseable {
 
     /**
      * Put the page in the cache.
+     *
      * @param page the page
      */
     void cachePage(Page<?,?> page) {

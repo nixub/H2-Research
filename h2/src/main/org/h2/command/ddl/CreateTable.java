@@ -5,8 +5,6 @@
  */
 package org.h2.command.ddl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import org.h2.api.ErrorCode;
 import org.h2.command.CommandInterface;
 import org.h2.command.dml.Insert;
@@ -21,6 +19,9 @@ import org.h2.schema.Sequence;
 import org.h2.table.Column;
 import org.h2.table.Table;
 import org.h2.value.Value;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * This class represents the statement
@@ -66,7 +67,7 @@ public class CreateTable extends CommandWithColumns {
     public void setIfNotExists(boolean ifNotExists) {
         this.ifNotExists = ifNotExists;
     }
-
+    // 此更新的意义  执行一个语句 建表
     @Override
     public long update() {
 //<<<<<<< HEAD

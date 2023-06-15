@@ -5,8 +5,6 @@
  */
 package org.h2.expression;
 
-import java.util.List;
-
 import org.h2.api.ErrorCode;
 import org.h2.engine.SessionLocal;
 import org.h2.expression.function.NamedExpression;
@@ -20,8 +18,11 @@ import org.h2.value.TypeInfo;
 import org.h2.value.Typed;
 import org.h2.value.Value;
 
+import java.util.List;
+
 /**
  * An expression is a operation, a value, or a function in a query.
+ * 表达式是查询中的操作、值或函数。
  */
 //9个抽象方法
 public abstract class Expression implements HasSQL, Typed {

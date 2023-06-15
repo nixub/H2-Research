@@ -5,7 +5,6 @@
  */
 package org.h2.constraint;
 
-import java.util.HashSet;
 import org.h2.engine.DbObject;
 import org.h2.engine.SessionLocal;
 import org.h2.expression.Expression;
@@ -17,6 +16,8 @@ import org.h2.schema.Schema;
 import org.h2.schema.SchemaObject;
 import org.h2.table.Column;
 import org.h2.table.Table;
+
+import java.util.HashSet;
 
 /**
  * The base class for constraint checking.
@@ -38,6 +39,7 @@ public abstract class Constraint extends SchemaObject implements Comparable<Cons
          */
         UNIQUE,
         /**
+         * 引用约束的约束类型  外键
          * The constraint type for referential constraints.
          */
         REFERENTIAL,
