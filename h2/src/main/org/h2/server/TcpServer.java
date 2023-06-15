@@ -255,6 +255,7 @@ public class TcpServer implements Service {
         initManagementDb();
     }
 
+    // 监听有没有连接，有客户端的连接服务端就新建一个线程 ,该方法阻塞
     @Override
     public void listen() {
     	//在org.h2.tools.Server.start()中的service.getName() + " (" + service.getURL() + ")";
@@ -262,20 +263,26 @@ public class TcpServer implements Service {
         listenerThread = Thread.currentThread();
         String threadName = listenerThread.getName();
         try {
+            // 通过这个stop 控制
             while (!stop) {
+                //侦听要连接到此套接字并接受它。
                 Socket s = serverSocket.accept();
                 //s.setSoTimeout(2000); //我加上的
                 Utils10.setTcpQuickack(s, true);
                 int id = nextThreadId++;
-                //该方法有具体的socket连接，传输对象
+                //该方法有具体的socket连接，传输对象 服务端就新建一个任务 作用： 协议体的传输
+				
                 TcpServerThread c = new TcpServerThread(s, this, id);
+                // 把会话连接的线程 放到running集合中来管理
                 running.add(c);
                 //TcpServerThread线程名是: "H2 TCP Server (tcp://localhost:9092) thread"
+				 //新建一个线程，来执行任务。 这个bio 的模式 针对这种应用一个或少量连接，倒是可以接受
                 Thread thread = new Thread(c, threadName + " thread-" + id);
                 thread.setDaemon(isDaemon);
                 c.setThread(thread);
                 thread.start();
             }
+            // 但stop为 true 时，就会执行这一句 关闭 连接，优雅关闭服务器。
             serverSocket = NetUtils.closeSilently(serverSocket);
         } catch (Exception e) {
             if (!stop) {

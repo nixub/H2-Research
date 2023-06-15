@@ -12,6 +12,9 @@ import org.h2.value.VersionedValue;
  * Class CommitDecisionMaker makes a decision during post-commit processing
  * about how to transform uncommitted map entry into committed one,
  * based on undo log information.
+ * CommitDecisionMaker 类在提交后处理期间做出决定
+ *   * 关于如何将未提交的映射条目转换为已提交的映射条目，
+ *   * 基于撤销日志信息。
  *
  * @author <a href='mailto:andrei.tokar@gmail.com'>Andrei Tokar</a>
  */

@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * A table stored in a MVStore.
+ * A table stored in a MVStore.存储在 MVStore 中的表。
  *
  * @TODO merge this with RegularTable now that pagestore is gone
  */

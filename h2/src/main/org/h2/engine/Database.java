@@ -278,6 +278,7 @@ public final class Database implements DataHandler, CastDataProvider {
                     lock = new FileLock(traceSystem, lockFileName, Constants.LOCK_SLEEP);
                     lock.lock(fileLockMethod);
                     if (autoServerMode) {
+                        // 开启服务器模式
                         startServer(lock.getUniqueId());
                     }
                 }
@@ -285,7 +286,9 @@ public final class Database implements DataHandler, CastDataProvider {
             }
             starting = true;
             if (dbSettings.mvStore) {
-                store = new Store(this);
+
+                // 开始创建一个存储
+                store = new Store(this, ci.getFileEncryptionKey());
             } else {
                 throw new UnsupportedOperationException();
             }
@@ -305,7 +308,9 @@ public final class Database implements DataHandler, CastDataProvider {
             }
             publicRole = new Role(this, 0, sysIdentifier(Constants.PUBLIC_ROLE_NAME), true);
             usersAndRoles.put(publicRole.getName(), publicRole);
+            // 创建一个连接
             systemSession = createSession(systemUser);
+            // 大对象连接
             lobSession = createSession(systemUser);
             Set<String> settingKeys = dbSettings.getSettings().keySet();
             store.getTransactionStore().init(lobSession);
@@ -625,11 +630,13 @@ public final class Database implements DataHandler, CastDataProvider {
 
     private void startServer(String key) {
         try {
+            //创建一个新的 TCP 服务器，但还没有启动它
             server = Server.createTcpServer(
                     "-tcpPort", Integer.toString(autoServerPort),
                     "-tcpAllowOthers",
                     "-tcpDaemon",
                     "-key", key, databaseName);
+            //尝试开启一个服务端
             server.start();
         } catch (SQLException e) {
             throw DbException.convert(e);

@@ -23,7 +23,7 @@ import org.h2.table.TableFilter;
 import org.h2.value.VersionedValue;
 
 /**
- * An index that delegates indexing to another index.
+ * An index that delegates indexing to another index.将索引委托给另一个索引的索引。
  */
 public class MVDelegateIndex extends MVIndex<Long, SearchRow> {
 

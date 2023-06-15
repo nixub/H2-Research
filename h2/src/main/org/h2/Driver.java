@@ -56,7 +56,10 @@ public class Driver implements java.sql.Driver, JdbcDriverBackwardsCompat {
         if (url == null) {
             throw DbException.getJdbcSQLException(ErrorCode.URL_FORMAT_ERROR_2, null, Constants.URL_FORMAT, null);
         } else if (url.startsWith(Constants.START_URL)) {
-            return new JdbcConnection(url, info, null, null);
+            //内部的
+            //  会话可关闭对象不会像 Eclipse 警告的那样泄漏 - 由于
+            //  关闭观察器。
+            return new JdbcConnection(url, info, null, null, false);
         } else if (url.equals(DEFAULT_URL)) {
             return DEFAULT_CONNECTION.get();
         } else {
@@ -141,6 +144,7 @@ public class Driver implements java.sql.Driver, JdbcDriverBackwardsCompat {
 
     /**
      * INTERNAL
+     * @return instance of the driver registered with the DriverManager
      */
     public static synchronized Driver load() {
         try {

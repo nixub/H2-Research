@@ -109,6 +109,7 @@ public class CreateIndex extends SchemaCommand {
             indexType = IndexType.createNonUnique(persistent, hash, spatial);
         }
         IndexColumn.mapColumns(indexColumns, table);
+        //为此表创建索引
         table.addIndex(session, indexName, id, indexColumns, uniqueColumnCount, indexType, create, comment);
         return 0;
     }

@@ -30,7 +30,7 @@ import org.h2.util.StringUtils;
 import org.h2.value.VersionedValue;
 
 /**
- * A store that supports concurrent MVCC read-committed transactions.
+ * A store that supports concurrent MVCC read-committed transactions.支持并发 MVCC 读取提交事务的存储。
  */
 public class TransactionStore {
 

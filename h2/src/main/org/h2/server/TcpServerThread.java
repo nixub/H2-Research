@@ -63,6 +63,7 @@ public class TcpServerThread implements Runnable {
     @Override
     public void run() {
         try {
+            // 传输对象初始化
             transfer.init();
             trace("Connect");
             // TODO server: should support a list of allowed databases

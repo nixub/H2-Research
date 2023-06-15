@@ -10,6 +10,8 @@ import java.util.BitSet;
 /**
  * Class VersionedBitSet extends standard BitSet to add a version field.
  * This will allow bit set and version to be changed atomically.
+ * 类 VersionedBitSet 扩展标准 BitSet 以添加版本字段。
+ *   * 这将允许自动更改位集和版本。
  */
 final class VersionedBitSet extends BitSet {
     private static final long serialVersionUID = 1L;

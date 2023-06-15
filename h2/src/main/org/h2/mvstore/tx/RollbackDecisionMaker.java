@@ -10,6 +10,7 @@ import org.h2.value.VersionedValue;
 
 /**
  * Class RollbackDecisionMaker process undo log record during transaction rollback.
+ * 类 RollbackDecisionMaker 在事务回滚过程中处理撤销日志记录。
  *
  * @author <a href='mailto:andrei.tokar@gmail.com'>Andrei Tokar</a>
  */

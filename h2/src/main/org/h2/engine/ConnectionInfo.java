@@ -288,7 +288,7 @@ public class ConnectionInfo implements Cloneable {
     }
 
     /**
-     * Check if the referenced database is an unnamed in-memory database.
+     * Check if the referenced database is an unnamed in-memory database.检查引用的数据库是否是未命名的内存数据库。
      *
      * @return true if it is
      */

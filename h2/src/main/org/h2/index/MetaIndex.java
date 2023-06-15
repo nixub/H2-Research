@@ -19,7 +19,7 @@ import org.h2.table.MetaTable;
 import org.h2.table.TableFilter;
 
 /**
- * The index implementation for meta data tables.
+ * The index implementation for meta data tables.  元数据表的索引实现。
  */
 public class MetaIndex extends Index {
 

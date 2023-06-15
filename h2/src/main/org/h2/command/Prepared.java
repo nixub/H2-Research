@@ -179,6 +179,7 @@ public abstract class Prepared {
      * @throws DbException if any parameter has not been set
      */
     protected void checkParameters() {
+        //持久化对象标识
         if (persistedObjectId < 0) {
             // restore original persistedObjectId on Command re-run
             // i.e. due to concurrent update

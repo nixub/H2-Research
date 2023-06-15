@@ -25,7 +25,7 @@ import org.h2.value.ValueNull;
 import org.h2.value.ValueVarchar;
 
 /**
- * Legacy implementation of database meta information.
+ * Legacy implementation of database meta information.  数据库元信息的遗留实现
  */
 public final class DatabaseMetaLegacy extends DatabaseMetaLocalBase {
 

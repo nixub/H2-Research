@@ -6,7 +6,7 @@
 package org.h2.fulltext;
 
 /**
- * The settings of one full text search index.
+ * The settings of one full text search index. 一个全文搜索索引的设置。
  */
 public class IndexInfo {
 
@@ -26,17 +26,17 @@ public class IndexInfo {
     protected String table;
 
     /**
-     * The column indexes of the key columns.
+     * The column indexes of the key columns.  键列的列索引
      */
     protected int[] keys;
 
     /**
-     * The column indexes of the index columns.
+     * The column indexes of the index columns.  索引列的列索引。
      */
     protected int[] indexColumns;
 
     /**
-     * The column names.
+     * The column names.   列名称
      */
     protected String[] columns;
 }

@@ -16,6 +16,8 @@ import org.h2.value.VersionedValue;
 /**
  * Class Record is a value for undoLog.
  * It contains information about a single change of some map.
+ * Class Record 是undoLog 的一个值。
+ *   * 它包含有关某些地图的单个更改的信息。
  *
  * @author <a href='mailto:andrei.tokar@gmail.com'>Andrei Tokar</a>
  */

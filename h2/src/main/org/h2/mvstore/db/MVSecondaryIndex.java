@@ -35,7 +35,7 @@ import org.h2.value.ValueNull;
 import org.h2.value.VersionedValue;
 
 /**
- * An index stored in a MVStore.
+ * An index stored in a MVStore. 存储在 MVStore 中的索引。
  */
 //索引数据也放在Map中，
 //map的key由索引字段和MVPrimaryIndex的key组成，把它们合成一个ValueArray，MVPrimaryIndex的key放在ValueArray的最后，

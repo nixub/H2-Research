@@ -35,7 +35,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * A table stored in a MVStore.
+ * A table stored in a MVStore. 存储在 MVStore 中的表。
  */
 public class MVPrimaryIndex extends MVIndex<Long, SearchRow> {
 

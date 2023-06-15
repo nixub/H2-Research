@@ -110,7 +110,7 @@ public class JdbcConnection extends TraceObject implements Connection, JdbcConne
             if (baseDir != null) {
                 ci.setBaseDir(baseDir);
             }
-            // this will return an embedded or server connection
+            // this will return an embedded or server connection 这将返回一个嵌入式或服务器连接
             session = new SessionRemote(ci).connectEmbeddedOrServer(false);
             setTrace(session.getTrace(), TraceObject.CONNECTION, getNextId(TraceObject.CONNECTION));
             this.user = ci.getUserName();

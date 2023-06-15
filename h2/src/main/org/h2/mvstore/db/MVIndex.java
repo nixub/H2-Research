@@ -16,7 +16,7 @@ import org.h2.value.VersionedValue;
 import java.util.List;
 
 /**
- * An index that stores the data in an MVStore.将数据存储在 MVStore 中的索引。
+ * An index that stores the data in an MVStore. 将数据存储在 MVStore 中的索引。
  */
 public abstract class MVIndex<K,V> extends Index {
 

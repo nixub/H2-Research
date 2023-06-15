@@ -154,7 +154,7 @@ final class FullTextSettings {
     }
 
     /**
-     * Get or create the fulltext settings for this database.
+     * Get or create the fulltext settings for this database.  获取或创建此数据库的全文设置。
      *
      * @param conn the connection
      * @return the settings

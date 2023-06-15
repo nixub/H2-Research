@@ -19,6 +19,7 @@ import org.h2.value.ValueVarchar;
 
 /**
  * Token.
+ * tokens q全是SQL语句的关键词，为什么不用keywords?
  */
 public abstract class Token implements Cloneable {
 

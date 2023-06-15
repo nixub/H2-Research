@@ -181,9 +181,9 @@ public abstract class Query extends Prepared {
      * Execute the query without checking the cache. If a target is specified,
      * the results are written to it, and the method returns null. If no target
      * is specified, a new LocalResult is created and returned.
-     *
+     *在没有检查到缓存时，执行这个查询方法，，如果一个目标是特殊的，把结果写给他， 如果目标不是指点的，一个新的本地结果创造和返回
      * @param limit the limit as specified in the JDBC method call
-     * @param target the target to write results to
+     * @param target the target to write results to  要将结果写入目标
      * @return the result
      */
     protected abstract ResultInterface queryWithoutCache(long limit, ResultTarget target);
@@ -460,8 +460,9 @@ public abstract class Query extends Prepared {
 
     /**
      * Execute the query, writing the result to the target result.
+     * 执行查询，为了目标结果
      *
-     * @param limit the maximum number of rows to return
+     * @param limit the maximum number of rows to return  现在返回的最大行数
      * @param target the target result (null will return the result)
      * @return the result set (if the target is not set).
      */
@@ -472,6 +473,7 @@ public abstract class Query extends Prepared {
             return queryWithoutCacheLazyCheck(limit, target);
         }
         fireBeforeSelectTriggers();
+        // 没有缓存时执行
         if (noCache || !session.getDatabase().getOptimizeReuseResults() || //不使用缓存
                 (session.isLazyQueryExecution() && !neverLazy)) {
             return queryWithoutCacheLazyCheck(limit, target);

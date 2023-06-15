@@ -371,6 +371,7 @@ public class AlterTableAddConstraint extends AlterTable {
         String indexName = t.getSchema().getUniqueIndexName(session, t,
                 prefix + "_INDEX_");
         try {
+            //为此表创建索引
             Index index = t.addIndex(session, indexName, indexId, cols, unique ? cols.length : 0, indexType, true,
                     null);
             createdIndexes.add(index);

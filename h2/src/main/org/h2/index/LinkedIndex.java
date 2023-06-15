@@ -27,7 +27,8 @@ import org.h2.value.ValueNull;
 
 /**
  * A linked index is a index for a linked (remote) table.
- * It is backed by an index on the remote table which is accessed over JDBC.
+ * It is backed by an index on the remote table which is accessed over JDBC.   链接索引是链接（远程）表的索引。*它由通过 JDBC 访问的远程表上的索引支持
+ *
  */
 public class LinkedIndex extends Index {
 

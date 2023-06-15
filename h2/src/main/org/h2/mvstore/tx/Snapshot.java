@@ -10,7 +10,7 @@ import java.util.BitSet;
 import org.h2.mvstore.RootReference;
 
 /**
- * Snapshot of the map root and committing transactions.
+ * Snapshot of the map root and committing transactions.映射根和提交事务的快照。
  */
 final class Snapshot<K,V> {
 

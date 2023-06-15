@@ -42,7 +42,7 @@ import org.h2.value.ValueNull;
 import org.h2.value.VersionedValue;
 
 /**
- * This is an index based on a MVRTreeMap.
+ * This is an index based on a MVRTreeMap. 这是一个基于 MVRTreeMap 的索引。
  *
  * @author Thomas Mueller
  * @author Noel Grandin

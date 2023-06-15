@@ -16,7 +16,7 @@ import org.h2.util.StringUtils;
 
 /**
  * A savepoint is a point inside a transaction to where a transaction can be
- * rolled back. The tasks that where done before the savepoint are not rolled
+ * rolled back. The tasks that where done before the savepoint are not rolled保存点是事务内部的一个点，可以在其中进行事务回滚。 在保存点之前完成的任务不会被滚动在这种情况下返回。
  * back in this case.
  */
 public final class JdbcSavepoint extends TraceObject implements Savepoint {

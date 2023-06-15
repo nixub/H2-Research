@@ -310,7 +310,7 @@ public final class SessionRemote extends Session implements DataHandler {
     }
 
     /**
-     * Open a new (remote or embedded) session.
+     * Open a new (remote or embedded) session. 这将返回一个嵌入式或服务器连接
      *
      * @param openNew whether to open a new session in any case
      * @return the session
@@ -516,6 +516,7 @@ public final class SessionRemote extends Session implements DataHandler {
         lastReconnect++;
         while (true) {
             try {
+                //开启一个远端或者本地的服务
                 embedded = connectEmbeddedOrServer(false);
                 break;
             } catch (DbException e) {

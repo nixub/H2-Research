@@ -52,7 +52,7 @@ import org.h2.value.ValueNull;
 import org.h2.value.ValueVarchar;
 
 /**
- * Server side support of database meta information.
+ * Server side support of database meta information.  数据库元信息的服务器端支持。
  */
 public final class DatabaseMetaServer {
 
